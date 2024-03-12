@@ -23,20 +23,23 @@ func CalculateVariance(numbers []int) (*float64, error) {
 		sum := func(f func(int) float64) float64{
 			var s float64
 			var wg sync.WaitGroup
-			wg.Add(n)
-			for _, num := range numbers {
-				defer wg.Done()
-				s += f(num)
-			}
+			wg.Add(len(numbers))
+			go func () {
+				for _, num := range numbers {
+					defer wg.Done()
+					s += f(num)
+				}
+			}()
+			
 			wg.Wait()
 			return s
 		}
 
-		mean := sum(func(i int) float64 {
+		mean := go sum(func(i int) float64 {
 			return float64(i)
 		}) / n
 
-		sumRes := sum(func(i int) float64{
+		sumRes := go sum(func(i int) float64{
 			return math.Pow(float64(i) - mean, 2)
 		})
 		
