@@ -13,5 +13,10 @@ const showHints = false;
 // CalculateMean returns mean of the numbers slice, or an error.
 func CalculateMean[T any](numbers []T) (*float64, error) {
     // Your code goes here
-    return nil, errors.New("empty set")
+	if numbers == nil || len(numbers) == 0{
+		return nil, errors.New("empty set")	
+	} else {
+		return nil, nil
+	}
+    
 }
